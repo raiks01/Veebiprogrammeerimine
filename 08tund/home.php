@@ -25,9 +25,11 @@
   <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
   <hr>
   <br>
-  <p><?php echo $userName; ?> | <a href="?logout=1">Logi välja</a>!</p>
+  <p><?php echo $userName; ?> |<a href="?logout=1">Logi välja</a>!</p>
   <ul>
     <li><a href="userprofile.php">Kasutajaprofiil</a></li>
+	<li><a href="messages.php">Sõnumid</a></li>
+	<li><a href="picupload.php">Piltide üleslaadimine</a></li>
   </ul>
   
 </body>

@@ -1,5 +1,14 @@
 <?php
-  $userName = "Rainer ya boi Halanurm";
+  require("../../../config_vp2019.php");
+  require("functions_main.php");
+  require("functions_user.php");
+  $database = "if19_rainer_ha_1";
+  $userName = "Sisselogimata kasutaja";
+  
+  $notice = "";
+  $email = "";
+  $emailError = "";
+  $passwordError = "";
   
   $photoDir = "../photos/";
   $photoTypes = ["image/jpeg", "image/png"];
@@ -63,11 +72,37 @@
   //echo $photoList[$photoNum];
   //<img src="../photos/tlu_terra_600x400_1.jpg" alt="TLÜ Terra õppehoone">
   $randomImgHTML = '<img src="' .$photoDir .$photoList[$photoNum] .'" alt="Juhuslik foto">';
+  //sisselogimine
+	if(isset($_POST["login"])){
+		if (isset($_POST["email"]) and !empty($_POST["email"])){
+		  $email = test_input($_POST["email"]);
+		} else {
+		  $emailError = "Palun sisesta kasutajatunnusena e-posti aadress!";
+		}
+	  
+		if (!isset($_POST["password"]) or strlen($_POST["password"]) < 8){
+		  $passwordError = "Palun sisesta parool, vähemalt 8 märki!";
+		}
+	  
+		if(empty($emailError) and empty($passwordError)){
+		   $notice = signIn($email, $_POST["password"]);
+		} else {
+			$notice = "Ei saa sisse logida!";
+		}
+	  }
   
-  require("header.php");
+  //require("header.php");
   
-  echo "<h1>" .$userName .", veebiprogrammeerimine </h1>";
+  //echo "<h1>" .$userName .", veebiprogrammeerimine </h1>";
   ?>
+  <!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="utf-8">
+	<title>Veebiprogrammeerimine, 2019, rainer</title>
+	<h1>Veebiprogrammeerimine</h1>
+  </head>
+  <body>
   <p><b style="color:#0606F5">See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiselt võetavat sisu! Eelmine lause ei ole tõene!! </b></p>
   <p><b style="color:#FF0000">ERROR 404 NOT FOUND </b></p>
   <p><b style="color:#0606F5">The End Is Near! Be ready to die in few days!</b></p></body>
@@ -78,6 +113,23 @@
   <hr>
   <?php
     echo "<p>Lehe avamise hetkel oli aeg: " .$fullTimeNow .", ". $partOfDay ."</p>";
+	//echo $randomImgHTML;
+	?>
+	
+	  <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+	  <label>E-mail (kasutajatunnus):</label><br>
+	  <input type="email" name="email" value="<?php echo $email; ?>">&nbsp;<span><?php echo $emailError; ?></span><br>
+	  
+	  <label>Salasõna:</label><br>
+	  <input name="password" type="password">&nbsp;<span><?php echo $passwordError; ?></span><br>
+	  
+	  <input name="login" type="submit" value="Logi sisse">&nbsp;<span><?php echo $notice; ?>
+	</form>
+	<br>
+	<h2>Kui pole kasutajakontot</h2>
+	<p>Loo <a href="newuser.php">kasutajakonto!</a></p>
+  
+  <?php
 	echo $randomImgHTML;
   ?>
   

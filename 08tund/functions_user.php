@@ -1,7 +1,9 @@
 <?php
+
 //Võtan kasutusele sessiooni
 session_start();
 //var_dump($_SESSION);
+
 function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	$notice = null;
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
@@ -19,6 +21,7 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
 	$conn -> close();
 	return $notice;
 }
+
   function signIn($email, $password){
 	$notice = "";
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
@@ -88,14 +91,25 @@ function signUp($name, $surname, $email, $gender, $birthDate, $password){
   function storeuserprofile($description, $bgColor, $txtColor){
 	$notice = "";
 	$conn = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
-    $stmt = $conn->prepare("SELECT id FROM vpuserprofiles WHERE userid=?");
+    $stmt = $conn->prepare("SELECT id FROM vpuserprofiles WHERE userid = ?");
 	echo $conn->error;
 	$stmt->bind_param("i", $_SESSION["userId"]);
 	$stmt->bind_result($idFromDb);
 	$stmt->execute();
 	if($stmt->fetch()){
 		//profiil juba olemas, uuendame
-		$notice = "Profiil olemas, ei salvestanud midagi!";
+		$stmt->close();
+		$stmt = $conn -> prepare("UPDATE vpuserprofiles SET description = ?, bgcolor = ?, txtcolor = ? WHERE userid = ?");
+		echo $conn->error;
+		$stmt->bind_param("isss", $description, $bgColor, $txtColor, $_SESSION["userId"]);
+		if($stmt->execute()){
+			$notice = "Profiili uuendamine õnnestus!";
+			$_SESSION["bgColor"] = $bgColor;
+			$_SESSION["txtColor"] = $txtColor;
+		} else {
+			$notice = "Profiil uuendamisel tekkis tõrge!" .$stmt->error;	
+		}
+		
 	} else {
 		//profiili pole, salvestame
 		$stmt->close();
