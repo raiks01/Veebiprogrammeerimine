@@ -2,6 +2,7 @@
   require("../../../config_vp2019.php");
   require("functions_user.php");
   require("functions_news.php");
+  require("functions_ip.php");
   $database = "if19_rainer_ha_1";
   
   //sessioonihaldus
@@ -31,17 +32,19 @@
   }
   //count($_COOKIE)
   
+  $ip = get_ip_address();
   $userName = $_SESSION["userFirstname"] ." " .$_SESSION["userLastname"];
   $newsHTML = latestNews(5); 
   require("header.php");
-	
+  
   echo "<h1>" .$userName .", Welcome to your homepage!</h1>";
   ?>
-  <p>See veebileht on loodud õppetöö käigus ning ei sisalda mingit tõsiseltvõetavat sisu!</p>
+  <p>See on sinu leht. Tee sellega mis tahad!</p>
   <hr>
   <br>
   <p>Sisseloginud kasutaja: <?php echo $userName; ?> |<a href="?logout=1" style="color:#FF0000">Logi välja</a></p>
-  <h2>Funktsioonid</h2>
+  <p> Sinu ip aadress: <?php echo $ip ?></p>
+  <h2>Funktsioonid:</h2>
   <ul>
     <li><a href="userprofile.php">Kasutajaprofiil</a></li>
 	<li><a href="messages.php">Sõnumid</a></li>
@@ -49,7 +52,8 @@
 	<li><a href="gallery.php">Pildigalerii</a></li>
 	<li><a href="userpics.php">Minu enda üleslaetud pildid</a></li>
 	<li><a href="addnews.php">Uudised</a></li>
-</ul>
+	<!--<li><a href="harjutus.php">Harjutus</a></li> -->
+  </ul>
 <hr>
 <?php
  echo $newsHTML;

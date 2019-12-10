@@ -31,7 +31,6 @@
 	
 	//kas vajutati mõtte salvestamise nuppu
 	if(isset($_POST["newsBtn"])){
-		//var_dump($_POST);
 		if(strlen($_POST["newsTitle"]) == 0){
 			$error .= "Uudise pealkiri on puudu!";
 		}
@@ -55,7 +54,6 @@
 			}
 		}
 	}
-
 	$newsHTML = latestNews(5);
 	//Javascript osa:
 	//<!-- Lisame tekstiredaktory TinyMCE -->
@@ -66,8 +64,7 @@
 	<?php
 		echo "<h1>" .$userName ." koolitöö leht</h1>";
 	  ?>
-	  <p>See leht on loodud koolis õppetöö raames
-	  ja ei sisalda tõsiseltvõetavat sisu!</p>
+	  <p>See leht on loodud koolis õppetöö raames ja ei sisalda tõsiseltvõetavat sisu!</p>
 	  <hr>
 	<p><a href="?logout=1" style="color:#FF0000">Logi välja</a> | <a href="home.php">Tagasi avalehele</a>
 
@@ -83,8 +80,8 @@
 			<input name="newsBtn" id="newsBtn" type="submit" value="Salvesta uudis!"> <span>&nbsp;</span><span><?php echo $error; ?></span>
 		</form>
 	<hr>
+	<?php
+	echo $newsHTML;
+	?>
 	
 	<!--Kui lasete uudise läbi test_input funktsiooni, siis html "<" ja ">" muudetakse koodideks. Uudise näitamisel siis tuleb need tagasi muuta ja selleks on vaja andmetabelist loetud uudis lasta läbi php funktsiooni htmlspecialchars_decode()
-<?php
-  echo $newsHTML;
-?>
